@@ -6,12 +6,6 @@
 	objectVersion = 46;
 	objects = {
 
-/* Begin PBXBuildFile section */
-
-
-		5E555C0D2413F4C50049A1A2 /* Bootpay.mm in Sources */ = {isa = PBXBuildFile; fileRef = B3E7B5891CC2AC0600A0062D /* Bootpay.mm */; };
-/* End PBXBuildFile section */
-
 /* Begin PBXCopyFilesBuildPhase section */
 		58B511D91A9E6C8500147676 /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
@@ -26,11 +20,14 @@
 
 /* Begin PBXFileReference section */
 		134814201AA4EA6300B7C361 /* libBootpay.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libBootpay.a; sourceTree = BUILT_PRODUCTS_DIR; };
-
-
+		8C5919FD25872FA500B0D949 /* Bootpay.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Bootpay.m; sourceTree = "<group>"; };
+		8C5919FF2587317000B0D949 /* BPCWebView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BPCWebView.h; sourceTree = "<group>"; };
+		8C591A002587317000B0D949 /* BPCWebView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BPCWebView.m; sourceTree = "<group>"; };
+		8C591A012587318D00B0D949 /* BPCWebViewManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BPCWebViewManager.h; sourceTree = "<group>"; };
+		8C591A022587318D00B0D949 /* BPCWebViewManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BPCWebViewManager.m; sourceTree = "<group>"; };
+		8C591A032587319C00B0D949 /* BPCWKProccessPoolManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BPCWKProccessPoolManager.h; sourceTree = "<group>"; };
+		8C591A042587319C00B0D949 /* BPCWKProccessPoolManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BPCWKProccessPoolManager.m; sourceTree = "<group>"; };
 		B3E7B5881CC2AC0600A0062D /* Bootpay.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Bootpay.h; sourceTree = "<group>"; };
-		B3E7B5891CC2AC0600A0062D /* Bootpay.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Bootpay.mm; sourceTree = "<group>"; };
-
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -55,13 +52,24 @@
 		58B511D21A9E6C8500147676 = {
 			isa = PBXGroup;
 			children = (
-
-
+				8C591A032587319C00B0D949 /* BPCWKProccessPoolManager.h */,
+				8C591A042587319C00B0D949 /* BPCWKProccessPoolManager.m */,
+				8C591A012587318D00B0D949 /* BPCWebViewManager.h */,
+				8C591A022587318D00B0D949 /* BPCWebViewManager.m */,
+				8C5919FF2587317000B0D949 /* BPCWebView.h */,
+				8C591A002587317000B0D949 /* BPCWebView.m */,
 				B3E7B5881CC2AC0600A0062D /* Bootpay.h */,
-				B3E7B5891CC2AC0600A0062D /* Bootpay.mm */,
-
+				8C5919FD25872FA500B0D949 /* Bootpay.m */,
 				134814211AA4EA7D00B7C361 /* Products */,
+				8C969A5925887BA1002625CB /* Frameworks */,
 			);
+			sourceTree = "<group>";
+		};
+		8C969A5925887BA1002625CB /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -121,10 +129,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-
-
-				5E555C0D2413F4C50049A1A2 /* Bootpay.mm in Sources */,
-
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -237,7 +241,6 @@
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = Bootpay;
 				SKIP_INSTALL = YES;
-
 			};
 			name = Debug;
 		};
@@ -254,7 +257,6 @@
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = Bootpay;
 				SKIP_INSTALL = YES;
-
 			};
 			name = Release;
 		};

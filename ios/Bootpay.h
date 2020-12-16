@@ -1,5 +1,5 @@
-#import <React/RCTBridgeModule.h>
+// #import <React/RCTBridgeModule.h>
 
-@interface Bootpay : NSObject <RCTBridgeModule>
+// @interface Bootpay : NSObject <RCTBridgeModule>
 
-@end
+// @end
