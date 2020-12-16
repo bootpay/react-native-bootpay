@@ -13,12 +13,6 @@ Pod::Spec.new do |s|
   s.platforms    = { :ios => "9.0" }
   s.source       = { :git => "https://github.com/ehowlsla/react-native-bootpay.git", :tag => "#{s.version}" }
 
-  
-  s.source_files = "ios/**/*.{h,m,mm,swift}"  
-  
-  
-  
-
-  s.dependency "React"
-  # s.dependency 'RNDeviceInfo', :podspec => '../node_modules/react-native-device-info'
+    s.source_files = "ios/**/*.{h,m,mm,swift}"  
+  s.dependency "React" 
 end

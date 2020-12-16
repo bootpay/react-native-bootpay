@@ -6,6 +6,35 @@
 	objectVersion = 46;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		8CA300342588B2C300F317C8 /* libRNDeviceInfo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8CA300302588B29500F317C8 /* libRNDeviceInfo.a */; };
+		8CA300352588B2C600F317C8 /* libRNSensitiveInfo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8CA300282588B28D00F317C8 /* libRNSensitiveInfo.a */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		8CA300272588B28D00F317C8 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8CA300232588B28D00F317C8 /* RNSensitiveInfo.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = BF8FCF941BFFB184000FCD37;
+			remoteInfo = RNSensitiveInfo;
+		};
+		8CA3002F2588B29500F317C8 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8CA3002A2588B29500F317C8 /* RNDeviceInfo.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = DA5891D81BA9A9FC002B4DB2;
+			remoteInfo = RNDeviceInfo;
+		};
+		8CA300312588B29500F317C8 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8CA3002A2588B29500F317C8 /* RNDeviceInfo.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = E72EC1401F7ABB5A0001BC90;
+			remoteInfo = "RNDeviceInfo-tvOS";
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXCopyFilesBuildPhase section */
 		58B511D91A9E6C8500147676 /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
@@ -27,6 +56,8 @@
 		8C591A022587318D00B0D949 /* BPCWebViewManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BPCWebViewManager.m; sourceTree = "<group>"; };
 		8C591A032587319C00B0D949 /* BPCWKProccessPoolManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BPCWKProccessPoolManager.h; sourceTree = "<group>"; };
 		8C591A042587319C00B0D949 /* BPCWKProccessPoolManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BPCWKProccessPoolManager.m; sourceTree = "<group>"; };
+		8CA300232588B28D00F317C8 /* RNSensitiveInfo.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNSensitiveInfo.xcodeproj; path = "../node_modules/react-native-sensitive-info/ios/RNSensitiveInfo.xcodeproj"; sourceTree = "<group>"; };
+		8CA3002A2588B29500F317C8 /* RNDeviceInfo.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNDeviceInfo.xcodeproj; path = "../node_modules/react-native-device-info/ios/RNDeviceInfo.xcodeproj"; sourceTree = "<group>"; };
 		B3E7B5881CC2AC0600A0062D /* Bootpay.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Bootpay.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -35,6 +66,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8CA300352588B2C600F317C8 /* libRNSensitiveInfo.a in Frameworks */,
+				8CA300342588B2C300F317C8 /* libRNDeviceInfo.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -68,8 +101,27 @@
 		8C969A5925887BA1002625CB /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				8CA3002A2588B29500F317C8 /* RNDeviceInfo.xcodeproj */,
+				8CA300232588B28D00F317C8 /* RNSensitiveInfo.xcodeproj */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		8CA300242588B28D00F317C8 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				8CA300282588B28D00F317C8 /* libRNSensitiveInfo.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		8CA3002B2588B29500F317C8 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				8CA300302588B29500F317C8 /* libRNDeviceInfo.a */,
+				8CA300322588B29500F317C8 /* libRNDeviceInfo-tvOS.a */,
+			);
+			name = Products;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -117,12 +169,46 @@
 			mainGroup = 58B511D21A9E6C8500147676;
 			productRefGroup = 58B511D21A9E6C8500147676;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = 8CA3002B2588B29500F317C8 /* Products */;
+					ProjectRef = 8CA3002A2588B29500F317C8 /* RNDeviceInfo.xcodeproj */;
+				},
+				{
+					ProductGroup = 8CA300242588B28D00F317C8 /* Products */;
+					ProjectRef = 8CA300232588B28D00F317C8 /* RNSensitiveInfo.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				58B511DA1A9E6C8500147676 /* Bootpay */,
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		8CA300282588B28D00F317C8 /* libRNSensitiveInfo.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libRNSensitiveInfo.a;
+			remoteRef = 8CA300272588B28D00F317C8 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		8CA300302588B29500F317C8 /* libRNDeviceInfo.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libRNDeviceInfo.a;
+			remoteRef = 8CA3002F2588B29500F317C8 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		8CA300322588B29500F317C8 /* libRNDeviceInfo-tvOS.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = "libRNDeviceInfo-tvOS.a";
+			remoteRef = 8CA300312588B29500F317C8 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
 
 /* Begin PBXSourcesBuildPhase section */
 		58B511D71A9E6C8500147676 /* Sources */ = {

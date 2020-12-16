@@ -34,6 +34,7 @@ export default class UserInfo extends Component {
     static getBootpayUUID = () => {
         let uuid = DeviceInfo.getUniqueId();
         return this.setBootpayInfo('uuid', uuid); 
+        return this.setBootpayInfo('uuid', uuid); 
     }
 
     static getBootpaySK = () => {
