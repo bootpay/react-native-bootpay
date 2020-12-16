@@ -1,6 +1,6 @@
 {
   "name": "react-native-bootpay",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "bootpay react-native module",
   "main": "lib/commonjs/index",
   "module": "lib/module/index",
@@ -34,13 +34,16 @@
     "ios",
     "android"
   ],
-  "repository": "https://github.com/ehowlsla/react-native-bootpay",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ehowlsla/react-native-bootpay.git"
+  },
   "author": "ehowlsla <rupy1014@gmail.com> (https://github.com/ehowlsla)",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/ehowlsla/react-native-bootpay/issues"
   },
-  "homepage": "https://github.com/ehowlsla/react-native-bootpay#readme", 
+  "homepage": "https://github.com/ehowlsla/react-native-bootpay#readme",
   "dependencies": {
     "react-native-device-info": "7.2.1",
     "react-native-sensitive-info": "5.5.8"
@@ -114,10 +117,21 @@
       ]
     }
   },
-  "eslintIgnore": ["node_modules/", "lib/"],
+  "eslintIgnore": [
+    "node_modules/",
+    "lib/"
+  ],
   "@react-native-community/bob": {
     "source": "src",
     "output": "lib",
-    "targets": ["commonjs", "module", "typescript"]
+    "targets": [
+      "commonjs",
+      "module",
+      "typescript"
+    ]
+  },
+  "directories": {
+    "example": "example",
+    "lib": "lib"
   }
 }
