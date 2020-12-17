@@ -1,103 +1,25 @@
-# react-native-bootpay
-
-부트페이 리액트 네이티브 모듈입니다. 이니시스, 네이버페이, 카카오페이 등 모든 PG와 결제수단을 간편하게 결제연동 할 수 있습니다. PG나 결제수단 변경시 parameter 만 바꾸면 되며, 더욱 개발하기 쉽도록 인터페이스를 제공합니다.
-
-
-
-## 부트페이 소개
-
-부트페이는 국내 주요 PG와 모든 결제수단을 쉽게 연동할 수 있는 인터페이스를 제공합니다. PG를 추가/변경시 파라미터만 변경하거나, 코드변경없이도 가능하도록 제공합니다. 복잡한 결제를 쉽게 연동하여 개발비용과 시간을 절감하세요!
-
-
-
-## 설치하기
-
-
-
-### Automatic Installation (react native version > 0.60.0)
-
-
-```sh
-npm install react-native-bootpay --save 
-```
-
-or: 
-
-```sh
-yarn add react-native-bootpay 
-```
-
-`react-native-bootpay` 모듈은 `react-native-device-info` 와 `react-native-sensitive-info`를 서브모듈로 사용합니다. 따라서 `react-native-bootpay` 모듈 설치시 함께 설치해주셔야 합니다. `package.json` 파일의 `dependencies`에 아래의 코드를 추가해주세요.
-
-```sh
-// ...
-  "dependencies": {
-    "react-native-device-info": "7.2.1",
-    "react-native-sensitive-info": "5.5.8"
-  },
-//...
-```
-
-`yarn install` 후에 ios 폴더에서 `pod init`을 하여 설치를 완료합니다.
-
+/**
+ * Sample React Native App
+ * https://github.com/facebook/react-native
+ *
+ * @format
+ * @flow strict-local
+ */
  
+import React, { useRef } from 'react';
+import {
+  StyleSheet,
+  View,
+  Text,
+  TouchableOpacity
+} from 'react-native';
 
-<details>
-<summary>
-<b>
-Manual Installation (react native version < 0.60.0)
-</b>
-</summary>
-
-#### iOS
-
-1. In the XCode's "Project navigator", right click on your project's Libraries folder ➜ `Add Files to <...>`
-2. Go to `node_modules` ➜ `react-native-bootpay` ➜ `ios` ➜ select `Bootpay.xcodeproj`
-3. Add `libBootpay.a` to `Build Phases -> Link Binary With Libraries`
-4. Add the Bootpay SDK to your XCode project as described on the Bootpay website
-
-Alertnatively, you may use the podspec file:
-
-```
-  ...
-  pod 'Bootpay', :path => '../node_modules/react-native-bootpay'
-  ...
-```
-
-#### Android
-
-1. Add the following lines to `android/settings.gradle`:
-    ```gradle
-    include ':react-native-bootpay'
-    project(':react-native-bootpay').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-bootpay/android')
-
-2. Update the android build tools version to `3.4.1` in `android/build.gradle`:
-    ```gradle
-    buildscript {
-        ...
-        dependencies {
-            classpath 'com.android.tools.build:gradle:3.4.1'
-        }
-        ...
-    }
-    ...
-    ```
-
-</details>
-
-
-## 사용하기
-
-```js
 import { BootpayWebView } from 'react-native-bootpay';
+const App: () => React$Node = () => {
+  const bootpay = useRef<BootpayWebView>(null);
+  
 
-// ...
-
-const bootpay = useRef<BootpayWebView>(null);
-
-// ...
- const onPress = () => {  
-
+  const onPress = () => {   
     const payload = {
       pg: 'danal',  //['kcp', 'danal', 'inicis', 'nicepay', 'lgup', 'toss', 'payapp', 'easypay', 'jtnet', 'tpay', 'mobilians', 'payletter', 'onestore', 'welcome'] 중 택 1
       name: '마스카라', //결제창에 보여질 상품명
@@ -155,36 +77,8 @@ const bootpay = useRef<BootpayWebView>(null);
     if(bootpay != null && bootpay.current != null) bootpay.current.request(payload, items, user, extra);
   }
 
-// ...
 
-const onCancel = (data: string) => {
-  console.log('cancel', data);
-}
-
-const onError = (data: string) => {
-  console.log('error', data);
-}
-
-const onReady = (data: string) => {
-  console.log('ready', data);
-}
-
-const onConfirm = (data: string) => {
-  console.log('confirm', data);
-  if(bootpay != null && bootpay.current != null) bootpay.current.transactionConfirm(data);
-}
-
-const onDone = (data: string) => {
-  console.log('done', data);
-}
-
-const onClose = () => {
-  // thi
-}
-
-// ...
-
-return (
+  return (
     <View style={styles.container}>
         <TouchableOpacity
           style={styles.button}
@@ -206,8 +100,43 @@ return (
  
     </View>
   ); 
-```
+};
 
-## License
+const onCancel = (data) => {
+  console.log('cancel', data);
+}
 
-MIT
+const onError = (data) => {
+  console.log('error', data);
+}
+
+const onReady = (data) => {
+  console.log('ready', data);
+}
+
+const onConfirm = (data) => {
+  console.log('confirm', data);
+}
+
+const onDone = (data) => {
+  console.log('done', data);
+}
+
+const onClose = () => {
+  console.log('closed');
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  button: {
+    alignItems: "center",
+    backgroundColor: "#DDDDDD",
+    padding: 10
+  },
+});
+
+export default App;

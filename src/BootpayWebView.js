@@ -3,7 +3,7 @@ import { SafeAreaView, Modal, Platform } from 'react-native';
 import WebView  from './WebView'; 
 import UserInfo from './UserInfo'
 
-export default class BootpayWebView extends Component { 
+export class BootpayWebView extends Component { 
     state = {
         visibility: false,
         script: '',
