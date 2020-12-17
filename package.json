@@ -38,14 +38,14 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ehowlsla/react-native-bootpay.git"
+    "url": "git+https://github.com/bootpay/react-native-bootpay.git"
   },
-  "author": "ehowlsla <rupy1014@gmail.com> (https://github.com/ehowlsla)",
+  "author": "bootpay <bootpay.co.kr@gmail.com> (https://github.com/bootpay)",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/ehowlsla/react-native-bootpay/issues"
+    "url": "https://github.com/bootpay/react-native-bootpay/issues"
   },
-  "homepage": "https://github.com/ehowlsla/react-native-bootpay#readme",
+  "homepage": "https://github.com/bootpay/react-native-bootpay#readme",
   "dependencies": {
     "react-native-device-info": "7.2.1",
     "react-native-sensitive-info": "5.5.8"
