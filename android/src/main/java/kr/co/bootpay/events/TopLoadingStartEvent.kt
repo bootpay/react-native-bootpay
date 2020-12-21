@@ -1,4 +1,4 @@
-package com.bootpaytemp.events
+package kr.co.bootpay.events
 
 import com.facebook.react.bridge.WritableMap
 import com.facebook.react.uimanager.events.Event

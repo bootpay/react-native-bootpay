@@ -3,7 +3,8 @@ package com.example.reactnativebootpay;
 import android.app.Application;
 import android.content.Context;
 
-import com.bootpaytemp.BPCWebViewPackage;
+// import com.bootpaytemp.BPCWebViewPackage;
+import kr.co.bootpay.BootpayPackage;
 import com.facebook.react.PackageList;
 import com.facebook.react.ReactApplication;
 import com.learnium.RNDeviceInfo.RNDeviceInfo;
@@ -30,7 +31,7 @@ public class MainApplication extends Application implements ReactApplication {
           List<ReactPackage> packages = new PackageList(this).getPackages();
           // Packages that cannot be autolinked yet can be added manually here, for BootpayExample:
           // packages.add(new MyReactNativePackage());
-          packages.add(new BPCWebViewPackage());
+          packages.add(new BootpayPackage());
 
           return packages;
         }

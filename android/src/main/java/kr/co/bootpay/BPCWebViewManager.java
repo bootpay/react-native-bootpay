@@ -57,10 +57,10 @@ import com.facebook.react.uimanager.annotations.ReactProp;
 import com.facebook.react.uimanager.events.Event;
 import com.facebook.react.uimanager.events.EventDispatcher;
 
-import com.bootpaytemp.events.TopHttpErrorEvent;
-import com.bootpaytemp.events.TopLoadingProgressEvent;
-import com.bootpaytemp.events.TopShouldStartLoadWithRequestEvent;
-import com.bootpaytemp.events.TopRenderProcessGoneEvent;
+import kr.co.bootpay.events.TopHttpErrorEvent;
+import kr.co.bootpay.events.TopLoadingProgressEvent;
+import kr.co.bootpay.events.TopShouldStartLoadWithRequestEvent;
+import kr.co.bootpay.events.TopRenderProcessGoneEvent;
 
 import org.json.JSONException;
 import org.json.JSONObject;

@@ -1,9 +1,7 @@
-package com.bootpaytemp;
+package kr.co.bootpay
 
 import com.facebook.react.ReactPackage
 import com.facebook.react.bridge.ReactApplicationContext
-import kr.co.bootpay.BPCWebViewManager
-import kr.co.bootpay.BPCWebViewModule
 
 
 class BootpayPackage: ReactPackage {
