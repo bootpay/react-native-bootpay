@@ -66,9 +66,7 @@ export class BootpayWebView extends Component {
                 script: 'if(BootPay == undefined || BootPay.request == undefined) {return;} BootPay.request(' + JSON.stringify(payload) + ')',
                 firstLoad: false 
             }
-        )
-        // uri: 'https://inapp.bootpay.co.kr/3.3.1/production.html'
-        console.log(payload);
+        ) 
         UserInfo.updateInfo();
     }
 
@@ -83,8 +81,7 @@ export class BootpayWebView extends Component {
 
     // uri: 'https://inapp.bootpay.co.kr/3.3.1/production.html'
 
-    onLoadEnd = async (e) => {
-        console.log('firstLoad', this.state.firstLoad);
+    onLoadEnd = async (e) => { 
 
         if(this.state.firstLoad == true) return;
         this.setBootpayPlatform();
@@ -162,9 +159,7 @@ export class BootpayWebView extends Component {
     }
 
     goBootpayRequest = () => {
-        // const script = 'BootPay.request({price: "1000.0",tax_free: "0.0",application_id: "5b8f6a4d396fa665fdc2b5e9",name: "테스트 마스카라",pg:"kcp",phone:"010-1234-4567",show_agree_window: 0,items: [{item_name: "미키 마우스",qty: 1,unique: "ITEM_CODE_MOUSE",price: 1000,cat1: "",cat2: "",cat3: ""},{item_name: "키보드",qty: 1,unique: "ITEM_CODE_KEYBOARD",price: 10000,cat1: "패션",cat2: "여성상의",cat3: "블라우스"}],params: {"callbackParam2":"value34","callbackParam1":"value12","callbackParam3":"value56","callbackParam4":"value78"},order_id: "1234_1234_124",use_order_id: "false",account_expire_at: "2020-12-07",method: "card",user_info: {id: "",username: "",user_id: "",email: "user1234@gmail.com",gender: 0,birth: "",phone: "010-1234-4567",area: "서울",addr: "서울시 동작구 상도로"},extra: {app_scheme:"bootpaysample",expire_month:"0",vbank_result:true,start_at: "",end_at: "",quota:"0,1,2,3",offer_period: "",popup: 0,quick_popup: 0,locale:"ko",disp_cash_result:"Y",escrow:"0",theme:"purple",custom_background:"",custom_font_color:"",iosCloseButton: false}})'
-        const fullScript = this.generateScript(this.state.script);
-        console.log(fullScript);
+        const fullScript = this.generateScript(this.state.script); 
         this.injectJavaScript(fullScript);
     }
 
@@ -182,18 +177,17 @@ export class BootpayWebView extends Component {
     }
 
     injectJavaScript = (script) => {
+        if(this.wv == null || this.wv == undefined) return;
         this.wv.injectJavaScript(`
         javascript:(function(){${script} })()
-          `);
-        //   setTimeout(function() { ${script} });
+          `); 
     }
 
     setAnalyticsData = async () => {
         const uuid = await UserInfo.getBootpayUUID();
         const bootpaySK = await UserInfo.getBootpaySK();
         const bootLastTime = await UserInfo.getBootpayLastTime();
-
-        console.log('bootLastTime', bootLastTime, Date.now(), '---', Date.now() - bootLastTime);
+ 
 
         const elaspedTime = Date.now() - bootLastTime;
         this.injectJavaScript(` 
