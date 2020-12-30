@@ -1,3 +1,6 @@
+## 0.5.2
+* react-native-webview와 충돌나기 때문에, interface 네이밍 수정 
+
 ## 0.5.1
 * 안드로이드 패키지명 수정 
 
