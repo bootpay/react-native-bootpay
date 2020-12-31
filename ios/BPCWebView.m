@@ -27,10 +27,10 @@ static NSDictionary* customCertificatesForHost;
 #if !TARGET_OS_OSX
 // runtime trick to remove WKWebView keyboard default toolbar
 // see: http://stackoverflow.com/questions/19033292/ios-7-uiwebview-keyboard-issue/19042279#19042279
-@interface _SwizzleHelperWK : UIView
+@interface _BPSwizzleHelperWK : UIView
 @property (nonatomic, copy) WKWebView *webView;
 @end
-@implementation _SwizzleHelperWK
+@implementation _BPSwizzleHelperWK
 -(id)inputAccessoryView
 {
     if (_webView == nil) {
@@ -685,7 +685,7 @@ static NSDictionary* customCertificatesForHost;
 
     if(subview == nil) return;
 
-    NSString* name = [NSString stringWithFormat:@"%@_SwizzleHelperWK", subview.class.superclass];
+    NSString* name = [NSString stringWithFormat:@"%@_BPSwizzleHelperWK", subview.class.superclass];
     Class newClass = NSClassFromString(name);
 
     if(newClass == nil)
@@ -693,7 +693,7 @@ static NSDictionary* customCertificatesForHost;
         newClass = objc_allocateClassPair(subview.class, [name cStringUsingEncoding:NSASCIIStringEncoding], 0);
         if(!newClass) return;
 
-        Method method = class_getInstanceMethod([_SwizzleHelperWK class], @selector(inputAccessoryView));
+        Method method = class_getInstanceMethod([_BPSwizzleHelperWK class], @selector(inputAccessoryView));
         class_addMethod(newClass, @selector(inputAccessoryView), method_getImplementation(method), method_getTypeEncoding(method));
 
         objc_registerClassPair(newClass);
@@ -1479,3 +1479,4 @@ static NSDictionary* customCertificatesForHost;
 }
 
 @end
+ㅠㅖ
