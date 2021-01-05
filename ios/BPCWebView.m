@@ -1478,5 +1478,4 @@ static NSDictionary* customCertificatesForHost;
     [self.scriptDelegate userContentController:userContentController didReceiveScriptMessage:message];
 }
 
-@end
-ㅠㅖ
+@end 

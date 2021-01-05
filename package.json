@@ -1,6 +1,6 @@
 {
   "name": "react-native-bootpay",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "bootpay react-native module",
   "main": "lib/commonjs/index",
   "module": "lib/module/index",
