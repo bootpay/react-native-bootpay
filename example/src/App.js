@@ -78,6 +78,36 @@ const App: () => React$Node = () => {
   }
 
 
+  const onCancel = (data) => {
+    console.log('cancel', data);
+
+    var json = JSON.stringify(data) 
+    console.log('cancel json', json);
+  }
+
+  const onError = (data) => {
+    console.log('error', data);
+  }
+
+  const onReady = (data) => {
+    console.log('ready', data);
+  }
+
+  const onConfirm = (data) => {
+    console.log('confirm', data);
+    if(bootpay != null && bootpay.current != null) bootpay.current.transactionConfirm(data);
+  }
+
+  const onDone = (data) => {
+    console.log('done', data);
+  }
+
+  const onClose = () => {
+    console.log('closed');
+  }
+
+
+
   return (
     <View style={styles.container}>
         <TouchableOpacity
@@ -96,35 +126,14 @@ const App: () => React$Node = () => {
           onConfirm={onConfirm}
           onDone={onDone}
           onClose={onClose}
+          allowFileAccess={true}
+          scalesPageToFit={true}
+          originWhitelist={['*']}
         />
  
     </View>
   ); 
 };
-
-const onCancel = (data) => {
-  console.log('cancel', data);
-}
-
-const onError = (data) => {
-  console.log('error', data);
-}
-
-const onReady = (data) => {
-  console.log('ready', data);
-}
-
-const onConfirm = (data) => {
-  console.log('confirm', data);
-}
-
-const onDone = (data) => {
-  console.log('done', data);
-}
-
-const onClose = () => {
-  console.log('closed');
-}
 
 const styles = StyleSheet.create({
   container: {

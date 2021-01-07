@@ -1,3 +1,5 @@
+
+
 import React, { Component } from 'react';
 import { SafeAreaView, Modal, Platform } from 'react-native'; 
 import WebView  from './WebView'; 
@@ -124,9 +126,19 @@ export class BootpayWebView extends Component {
         switch (data.action) {
             case 'BootpayCancel':
                 if(this.props.onCancel != undefined) this.props.onCancel(data);
+                this.setState(
+                    {
+                        visibility: false 
+                    }
+                ) 
                 break;
             case 'BootpayError':
                 if(this.props.onError != undefined) this.props.onError(data);
+                this.setState(
+                    {
+                        visibility: false 
+                    }
+                ) 
                 break;
             case 'BootpayBankReady':
                 if(this.props.onReady != undefined) this.props.onReady(data);
@@ -136,13 +148,17 @@ export class BootpayWebView extends Component {
                 break;
             case 'BootpayDone':
                 if(this.props.onDone != undefined) this.props.onDone(data);
+                this.setState(
+                    {
+                        visibility: false 
+                    }
+                ) 
                 break; 
         } 
     }
 
     onShouldStartLoadWithRequest = (url) => { 
-        return true;
-        // goBootpayRequest();
+        return true; 
     }
 
     setBootpayPlatform = () => {
@@ -163,10 +179,10 @@ export class BootpayWebView extends Component {
         this.injectJavaScript(fullScript);
     }
 
-    transactionConfirm = (data) => {
+    transactionConfirm = (data) => { 
+        var json = JSON.stringify(data)  
         this.injectJavaScript(`
-        var data = JSON.parse(${data}); 
-        BootPay.transactionConfirm(data);
+        BootPay.transactionConfirm(${json});
           `);
     }
 
