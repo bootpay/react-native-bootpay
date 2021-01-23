@@ -102,10 +102,11 @@ export class BootpayWebView extends Component {
         const onCancel = '.cancel(function(data){ window.ReactNativeWebView.postMessage( JSON.stringify(data) ); })';
         const onReady = '.ready(function(data){ window.ReactNativeWebView.postMessage( JSON.stringify(data) ); })';
         const onConfirm = '.confirm(function(data){ window.ReactNativeWebView.postMessage( JSON.stringify(data) ); })';
+        const onDone = '.done(function(data){ window.ReactNativeWebView.postMessage( JSON.stringify(data) ); })';
         const onClose = '.close(function(data){ window.ReactNativeWebView.postMessage("close"); })';
         
 
-        return script + onError + onCancel + onReady + onConfirm + onClose + '; void(0);';
+        return script + onError + onCancel + onReady + onConfirm + onDone + onClose + '; void(0);';
     }
 
     onMessage = ({ nativeEvent }) => {
