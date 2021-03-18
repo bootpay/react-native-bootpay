@@ -1,18 +1,18 @@
 
 
 import React, { Component } from 'react';
-import { SafeAreaView, Modal, Platform } from 'react-native'; 
-import WebView  from './WebView'; 
+import { SafeAreaView, Modal, Platform } from 'react-native';
+import WebView  from './WebView';
 import UserInfo from './UserInfo'
 
-export class BootpayWebView extends Component { 
+export class BootpayWebView extends Component {
     state = {
         visibility: false,
         script: '',
         firstLoad: false
     }
 
-    async componentWillUnmount() { 
+    async componentWillUnmount() {
         this.setState(
             {
                 visibility: false,
@@ -23,7 +23,7 @@ export class BootpayWebView extends Component {
         UserInfo.setBootpayLastTime(Date.now());
     }
 
-    render() { 
+    render() {
 
         const injectedJavascript = `(function() {
                 window.postMessage = function(data) {
@@ -41,7 +41,7 @@ export class BootpayWebView extends Component {
                     useWebKit={true}
                     originWhitelist={['*']}
                     source={{
-                        uri: 'https://inapp.bootpay.co.kr/3.3.1/production.html'
+                        uri: 'https://inapp.bootpay.co.kr/3.3.2/production.html'
                     }}
                     javaScriptEnabled={true}
                     javaScriptCanOpenWindowsAutomatically={true}
@@ -61,14 +61,14 @@ export class BootpayWebView extends Component {
         payload.user = user;
         payload.extra = extra;
 
-        //visibility가 true가 되면 webview onLoaded가 실행됨        
+        //visibility가 true가 되면 webview onLoaded가 실행됨
         this.setState(
             {
                 visibility: true,
                 script: 'if(BootPay == undefined || BootPay.request == undefined) {return;} BootPay.request(' + JSON.stringify(payload) + ')',
-                firstLoad: false 
+                firstLoad: false
             }
-        ) 
+        )
         UserInfo.updateInfo();
     }
 
@@ -83,16 +83,16 @@ export class BootpayWebView extends Component {
 
     // uri: 'https://inapp.bootpay.co.kr/3.3.1/production.html'
 
-    onLoadEnd = async (e) => { 
+    onLoadEnd = async (e) => {
 
         if(this.state.firstLoad == true) return;
         this.setBootpayPlatform();
-        await this.setAnalyticsData();    
+        await this.setAnalyticsData();
         this.goBootpayRequest();
 
         this.setState({
             ...this,
-            firstLoad: true 
+            firstLoad: true
         })
     }
 
@@ -103,9 +103,9 @@ export class BootpayWebView extends Component {
         const onReady = '.ready(function(data){ window.ReactNativeWebView.postMessage( JSON.stringify(data) ); })';
         const onConfirm = '.confirm(function(data){ window.ReactNativeWebView.postMessage( JSON.stringify(data) ); })';
         const onClose = '.close(function(data){ window.ReactNativeWebView.postMessage("close"); })';
-        
+        const onDone = '.done(function(data){ window.ReactNativeWebView.postMessage( JSON.stringify(data) ); })';
 
-        return script + onError + onCancel + onReady + onConfirm + onClose + '; void(0);';
+        return script + onError + onCancel + onReady + onConfirm + onClose + onDone + '; void(0);';
     }
 
     onMessage = ({ nativeEvent }) => {
@@ -122,23 +122,23 @@ export class BootpayWebView extends Component {
             return;
         }
 
-        const data = JSON.parse(nativeEvent.data);  
+        const data = JSON.parse(nativeEvent.data);
         switch (data.action) {
             case 'BootpayCancel':
                 if(this.props.onCancel != undefined) this.props.onCancel(data);
                 this.setState(
                     {
-                        visibility: false 
+                        visibility: false
                     }
-                ) 
+                )
                 break;
             case 'BootpayError':
                 if(this.props.onError != undefined) this.props.onError(data);
                 this.setState(
                     {
-                        visibility: false 
+                        visibility: false
                     }
-                ) 
+                )
                 break;
             case 'BootpayBankReady':
                 if(this.props.onReady != undefined) this.props.onReady(data);
@@ -150,15 +150,15 @@ export class BootpayWebView extends Component {
                 if(this.props.onDone != undefined) this.props.onDone(data);
                 this.setState(
                     {
-                        visibility: false 
+                        visibility: false
                     }
-                ) 
-                break; 
-        } 
+                )
+                break;
+        }
     }
 
-    onShouldStartLoadWithRequest = (url) => { 
-        return true; 
+    onShouldStartLoadWithRequest = (url) => {
+        return true;
     }
 
     setBootpayPlatform = () => {
@@ -170,17 +170,17 @@ export class BootpayWebView extends Component {
             this.injectJavaScript(`
   BootPay.setDevice('ANDROID');
           `);
-        } 
+        }
 
     }
 
     goBootpayRequest = () => {
-        const fullScript = this.generateScript(this.state.script); 
+        const fullScript = this.generateScript(this.state.script);
         this.injectJavaScript(fullScript);
     }
 
-    transactionConfirm = (data) => { 
-        var json = JSON.stringify(data)  
+    transactionConfirm = (data) => {
+        var json = JSON.stringify(data)
         this.injectJavaScript(`
         BootPay.transactionConfirm(${json});
           `);
@@ -196,20 +196,20 @@ export class BootpayWebView extends Component {
         if(this.wv == null || this.wv == undefined) return;
         this.wv.injectJavaScript(`
         javascript:(function(){${script} })()
-          `); 
+          `);
     }
 
     setAnalyticsData = async () => {
         const uuid = await UserInfo.getBootpayUUID();
         const bootpaySK = await UserInfo.getBootpaySK();
         const bootLastTime = await UserInfo.getBootpayLastTime();
- 
+
 
         const elaspedTime = Date.now() - bootLastTime;
-        this.injectJavaScript(` 
+        this.injectJavaScript(`
         window.BootPay.setAnalyticsData({uuid:'${uuid}',sk:'${bootpaySK}',sk_time:${bootLastTime},time:${elaspedTime}});
-        `); 
+        `);
     }
 }
 
-// BootpayWebView.prototype = 
+// BootpayWebView.prototype =
