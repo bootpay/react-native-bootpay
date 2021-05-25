@@ -64,7 +64,7 @@ const App: () => React$Node = () => {
       quota: "0,2,3",  //결제금액이 5만원 이상시 할부개월 허용범위를 설정할 수 있음, [0(일시불), 2개월, 3개월] 허용, 미설정시 12개월까지 허용
       offer_period: "", //결제창 제공기간에 해당하는 string 값, 지원하는 PG만 적용됨
       popup: 1, //1이면 popup, 아니면 iframe 연동
-      quick_popup: 0, //1: popup 호출시 버튼을 띄우지 않는다. 아닐 경우 버튼을 호출한다
+      quick_popup: 1, //1: popup 호출시 버튼을 띄우지 않는다. 아닐 경우 버튼을 호출한다
       locale: "ko", 
       disp_cash_result: "Y",  // 현금영수증 보일지 말지.. 가상계좌 KCP 옵션
       escrow: "0",  // 에스크로 쓸지 안쓸지

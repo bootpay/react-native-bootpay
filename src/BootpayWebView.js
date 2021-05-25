@@ -45,7 +45,7 @@ export class BootpayWebView extends Component {
                     }}
                     javaScriptEnabled={true}
                     javaScriptCanOpenWindowsAutomatically={true}
-                    scalesPageToFit={true}
+                    scalesPageToFit={true} 
                     onLoadEnd={this.onLoadEnd}
                     onMessage={this.onMessage}
                     onShouldStartLoadWithRequest={this.onShouldStartLoadWithRequest}
@@ -60,6 +60,10 @@ export class BootpayWebView extends Component {
         payload.items = items;
         payload.user = user;
         payload.extra = extra;
+
+        if(extra != undefined && extra.quickPopup == 1) {
+            this.appendJavaScriptBeforeContentLoaded('BootPay.startQuickPopup();');
+        }
 
         //visibility가 true가 되면 webview onLoaded가 실행됨
         this.setState(
@@ -82,18 +86,18 @@ export class BootpayWebView extends Component {
     }
 
     // uri: 'https://inapp.bootpay.co.kr/3.3.1/production.html'
-
-    onLoadEnd = async (e) => {
-
+    onLoadEnd = async (e) => { 
         if(this.state.firstLoad == true) return;
+
         this.setBootpayPlatform();
         await this.setAnalyticsData();
-        this.goBootpayRequest();
+        this.setPayScript();
+        this.startBootpay();
 
         this.setState({
             ...this,
             firstLoad: true
-        })
+        }) 
     }
 
 
@@ -161,33 +165,33 @@ export class BootpayWebView extends Component {
         return true;
     }
 
-    setBootpayPlatform = () => {
+    setBootpayPlatform = async () => { 
         if(Platform.OS == 'ios') {
-            this.injectJavaScript(`
-  BootPay.setDevice('IOS');
-          `);
+            this.appendJavaScriptBeforeContentLoaded(`BootPay.setDevice('IOS');`); 
         } else if(Platform.OS == 'android'){
-            this.injectJavaScript(`
-  BootPay.setDevice('ANDROID');
-          `);
+            this.appendJavaScriptBeforeContentLoaded(`BootPay.setDevice('ANDROID');`); 
         }
 
     }
 
-    goBootpayRequest = () => {
+    setPayScript = () => {
         const fullScript = this.generateScript(this.state.script);
         this.injectJavaScript(fullScript);
     }
 
+    startBootpay = () => {
+        this.wv.startBootpay(); 
+    } 
+
     transactionConfirm = (data) => {
         var json = JSON.stringify(data)
-        this.injectJavaScript(`
+        this.callJavaScript(`
         BootPay.transactionConfirm(${json});
           `);
     }
 
     removePaymentWindow = () => {
-        this.injectJavaScript(`
+        this.callJavaScript(`
         BootPay.removePaymentWindow();
           `);
     }
@@ -199,16 +203,27 @@ export class BootpayWebView extends Component {
           `);
     }
 
-    setAnalyticsData = async () => {
-        const uuid = await UserInfo.getBootpayUUID();
+    callJavaScript = (script) => {
+        if(this.wv == null || this.wv == undefined) return;
+        this.wv.callJavaScript(`
+        javascript:(function(){${script} })()
+          `);
+    }
+
+    appendJavaScriptBeforeContentLoaded = (script) => {
+        if(this.wv == null || this.wv == undefined) return;
+        this.wv.appendJavaScriptBeforeContentLoaded(`${script}`);
+    }
+
+
+    setAnalyticsData = async () => { 
+        const uuid = await UserInfo.getBootpayUUID(); 
         const bootpaySK = await UserInfo.getBootpaySK();
-        const bootLastTime = await UserInfo.getBootpayLastTime();
+        const bootLastTime = await UserInfo.getBootpayLastTime();      
 
 
         const elaspedTime = Date.now() - bootLastTime;
-        this.injectJavaScript(`
-        window.BootPay.setAnalyticsData({uuid:'${uuid}',sk:'${bootpaySK}',sk_time:${bootLastTime},time:${elaspedTime}});
-        `);
+        this.appendJavaScriptBeforeContentLoaded(`window.BootPay.setAnalyticsData({uuid:'${uuid}',sk:'${bootpaySK}',sk_time:${bootLastTime},time:${elaspedTime}});`); 
     }
 }
 

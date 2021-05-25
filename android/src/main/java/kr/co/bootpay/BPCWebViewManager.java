@@ -108,9 +108,12 @@ public class BPCWebViewManager extends SimpleViewManager<WebView> {
   public static final int COMMAND_RELOAD = 3;
   public static final int COMMAND_STOP_LOADING = 4;
   public static final int COMMAND_POST_MESSAGE = 5;
-  public static final int COMMAND_INJECT_JAVASCRIPT = 6;
+  public static final int COMMAND_INJECT_JAVASCRIPT = 6; //call evaluate javascript
   public static final int COMMAND_LOAD_URL = 7;
   public static final int COMMAND_FOCUS = 8;
+  public static final int COMMAND_APPEND_BEFORE_JAVASCRIPT = 9;
+  public static final int COMMAND_CALL_JAVASCRIPT = 10;
+  public static final int COMMAND_START_BOOTPAY = 11;
 
   // android commands
   public static final int COMMAND_CLEAR_FORM_DATA = 1000;
@@ -169,13 +172,21 @@ public class BPCWebViewManager extends SimpleViewManager<WebView> {
     if(setViewClient) webView.setWebViewClient(new BPCWebViewClient());
 //    mWebViewConfig.configWebView(webView);
     WebSettings settings = webView.getSettings();
-    settings.setBuiltInZoomControls(true);
-    settings.setDisplayZoomControls(false);
-    settings.setDomStorageEnabled(true);
-    settings.setSupportMultipleWindows(true);
 
+    settings.setAppCacheEnabled(true);
     settings.setAllowFileAccess(false);
     settings.setAllowContentAccess(false);
+    settings.setBuiltInZoomControls(true);
+    settings.setDisplayZoomControls(false);
+    settings.setCacheMode(WebSettings.LOAD_NO_CACHE);
+    settings.setDomStorageEnabled(true);
+    settings.setJavaScriptEnabled(true);
+    settings.setJavaScriptCanOpenWindowsAutomatically(true);
+    settings.setLoadsImagesAutomatically(true);
+    settings.setLoadWithOverviewMode(true);
+    settings.setUseWideViewPort(true);
+    settings.setSupportMultipleWindows(true);
+
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
       settings.setAllowFileAccessFromFileURLs(false);
       BPCReactProp.settingProp("allowUniversalAccessFromFileURLs", false, (BPCWebView) webView);
@@ -191,6 +202,11 @@ public class BPCWebViewManager extends SimpleViewManager<WebView> {
 
     if (ReactBuildConfig.DEBUG && Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
       WebView.setWebContentsDebuggingEnabled(true);
+    }
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+          settings.setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
+          CookieManager.getInstance().setAcceptCookie(true);
+          CookieManager.getInstance().setAcceptThirdPartyCookies(webView, true);
     }
 
     webView.setDownloadListener(new DownloadListener() {
@@ -463,11 +479,30 @@ public class BPCWebViewManager extends SimpleViewManager<WebView> {
 //    ((BPCWebView) view).setInjectedJavaScript(injectedJavaScript);
   }
 
+//  @ReactProp(name = "startBootpay")
+//  public void startBootpay(WebView view) {
+//    BPCReactProp.settingProp("startBootpay", null, (BPCWebView) view);
+//  }
+
+  @ReactProp(name = "callJavaScript")
+  public void callJavaScript(WebView view, @Nullable String injectedJavaScript) {
+    BPCReactProp.settingProp("callJavaScript", injectedJavaScript, (BPCWebView) view);
+  }
+
+//  COMMAND_CALL_JAVASCRIPT
+
+//  COMMAND_SET_JAVASCRIPT
+
   @ReactProp(name = "injectedJavaScriptBeforeContentLoaded")
   public void setInjectedJavaScriptBeforeContentLoaded(WebView view, @Nullable String injectedJavaScriptBeforeContentLoaded) {
     BPCReactProp.settingProp("injectedJavaScriptBeforeContentLoaded", injectedJavaScriptBeforeContentLoaded, (BPCWebView) view);
 //    BPCReactProp.getInstance().map.put("injectedJavaScriptBeforeContentLoaded", injectedJavaScriptBeforeContentLoaded);
 //    ((BPCWebView) view).setInjectedJavaScriptBeforeContentLoaded(injectedJavaScriptBeforeContentLoaded);
+  }
+
+  @ReactProp(name = "appendJavascriptBeforeContentLoaded")
+  public void appendJavascriptBeforeContentLoaded(WebView view, @Nullable String injectedJavaScriptBeforeContentLoaded) {
+    BPCReactProp.settingProp("appendJavascriptBeforeContentLoaded", injectedJavaScriptBeforeContentLoaded, (BPCWebView) view);
   }
 
   @ReactProp(name = "injectedJavaScriptForMainFrameOnly")
@@ -692,6 +727,9 @@ public class BPCWebViewManager extends SimpleViewManager<WebView> {
       .put("stopLoading", COMMAND_STOP_LOADING)
       .put("postMessage", COMMAND_POST_MESSAGE)
       .put("injectJavaScript", COMMAND_INJECT_JAVASCRIPT)
+      .put("callJavaScript", COMMAND_CALL_JAVASCRIPT)
+      .put("startBootpay", COMMAND_START_BOOTPAY)
+      .put("appendJavaScriptBeforeContentLoaded", COMMAND_APPEND_BEFORE_JAVASCRIPT)
       .put("loadUrl", COMMAND_LOAD_URL)
       .put("requestFocus", COMMAND_FOCUS)
       .put("clearFormData", COMMAND_CLEAR_FORM_DATA)
@@ -735,9 +773,21 @@ public class BPCWebViewManager extends SimpleViewManager<WebView> {
           throw new RuntimeException(e);
         }
         break;
+      case COMMAND_CALL_JAVASCRIPT:
+        BPCWebView reactWebView1 = (BPCWebView) root;
+        reactWebView1.evaluateJavascriptWithFallback(args.getString(0));
+        break;
       case COMMAND_INJECT_JAVASCRIPT:
-        BPCWebView reactWebView = (BPCWebView) root;
-        reactWebView.evaluateJavascriptWithFallback(args.getString(0));
+        BPCWebView reactWebView2 = (BPCWebView) root;
+        reactWebView2.setInjectedJavaScript(args.getString(0));
+        break;
+      case COMMAND_APPEND_BEFORE_JAVASCRIPT:
+        BPCWebView reactWebView3 = (BPCWebView) root;
+        reactWebView3.appendJavaScriptBeforeContentLoaded(args.getString(0));
+        break;
+      case COMMAND_START_BOOTPAY:
+        BPCWebView reactWebView4 = (BPCWebView) root;
+        reactWebView4.startBootpay();
         break;
       case COMMAND_LOAD_URL:
         if (args == null) {

@@ -13,6 +13,7 @@ import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+import java.util.ArrayList;
 
 public class BPCReactProp {
     Map<String, Object> map;
@@ -117,8 +118,21 @@ public class BPCReactProp {
             case "injectedJavaScript":
                 view.setInjectedJavaScript((String) val);
                 break;
+            case "callJavaScript":
+                view.callJavaScript((String) val);
+                break;
+
+
             case "injectedJavaScriptBeforeContentLoaded":
-                view.setInjectedJavaScriptBeforeContentLoaded((String) val);
+                view.setInjectedJavaScriptBeforeContentLoaded((ArrayList<String>) val);
+                break;
+
+            case "appendJavaScriptBeforeContentLoaded":
+                view.appendJavaScriptBeforeContentLoaded((String) val);
+                break;
+
+            case "startBootpay":
+                view.startBootpay();
                 break;
 
             case "injectedJavaScriptForMainFrameOnly":

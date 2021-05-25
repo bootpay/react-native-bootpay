@@ -54,7 +54,8 @@ RCT_EXPORT_VIEW_PROPERTY(onHttpError, RCTDirectEventBlock)
 RCT_EXPORT_VIEW_PROPERTY(onShouldStartLoadWithRequest, RCTDirectEventBlock)
 RCT_EXPORT_VIEW_PROPERTY(onContentProcessDidTerminate, RCTDirectEventBlock)
 RCT_EXPORT_VIEW_PROPERTY(injectedJavaScript, NSString)
-RCT_EXPORT_VIEW_PROPERTY(injectedJavaScriptBeforeContentLoaded, NSString)
+
+// RCT_EXPORT_VIEW_PROPERTY(injectedJavaScriptBeforeContentLoaded, NSString)
 RCT_EXPORT_VIEW_PROPERTY(injectedJavaScriptForMainFrameOnly, BOOL)
 RCT_EXPORT_VIEW_PROPERTY(injectedJavaScriptBeforeContentLoadedForMainFrameOnly, BOOL)
 RCT_EXPORT_VIEW_PROPERTY(javaScriptEnabled, BOOL)
@@ -158,6 +159,47 @@ RCT_EXPORT_METHOD(injectJavaScript:(nonnull NSNumber *)reactTag script:(NSString
     }
   }];
 }
+
+
+RCT_EXPORT_METHOD(appendJavaScriptBeforeContentLoaded:(nonnull NSNumber *)reactTag script:(NSString *)script)
+{
+  [self.bridge.uiManager addUIBlock:^(__unused RCTUIManager *uiManager, NSDictionary<NSNumber *, BPCWebView *> *viewRegistry) {
+    BPCWebView *view = viewRegistry[reactTag];
+    if (![view isKindOfClass:[BPCWebView class]]) {
+      RCTLogError(@"Invalid view returned from registry, expecting BPCWebView, got: %@", view);
+    } else {
+      [view appendJavaScriptBeforeContentLoaded:script];
+    }
+  }];
+}
+
+
+
+RCT_EXPORT_METHOD(callJavaScript:(nonnull NSNumber *)reactTag script:(NSString *)script)
+{
+  [self.bridge.uiManager addUIBlock:^(__unused RCTUIManager *uiManager, NSDictionary<NSNumber *, BPCWebView *> *viewRegistry) {
+    BPCWebView *view = viewRegistry[reactTag];
+    if (![view isKindOfClass:[BPCWebView class]]) {
+      RCTLogError(@"Invalid view returned from registry, expecting BPCWebView, got: %@", view);
+    } else {
+      [view callJavaScript:script];
+    }
+  }];
+}
+
+
+RCT_EXPORT_METHOD(startBootpay:(nonnull NSNumber *)reactTag)
+{
+  [self.bridge.uiManager addUIBlock:^(__unused RCTUIManager *uiManager, NSDictionary<NSNumber *, BPCWebView *> *viewRegistry) {
+    BPCWebView *view = viewRegistry[reactTag];
+    if (![view isKindOfClass:[BPCWebView class]]) {
+      RCTLogError(@"Invalid view returned from registry, expecting BPCWebView, got: %@", view);
+    } else {
+      [view startBootpay];
+    }
+  }];
+}
+ 
 
 RCT_EXPORT_METHOD(goBack:(nonnull NSNumber *)reactTag)
 {

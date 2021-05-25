@@ -31,7 +31,8 @@
 @property (nonatomic, copy) NSDictionary * _Nullable source;
 @property (nonatomic, assign) BOOL messagingEnabled;
 @property (nonatomic, copy) NSString * _Nullable injectedJavaScript;
-@property (nonatomic, copy) NSString * _Nullable injectedJavaScriptBeforeContentLoaded;
+// @property (nonatomic, copy) NSString * _Nullable injectedJavaScriptBeforeContentLoaded;
+@property (nonatomic, copy) NSMutableArray * _Nullable injectedJavaScriptBeforeContentLoaded;
 @property (nonatomic, assign) BOOL injectedJavaScriptForMainFrameOnly;
 @property (nonatomic, assign) BOOL injectedJavaScriptBeforeContentLoadedForMainFrameOnly;
 @property (nonatomic, assign) BOOL scrollEnabled;
@@ -77,6 +78,9 @@
 + (void)setCustomCertificatesForHost:(nullable NSDictionary *)certificates;
 - (void)postMessage:(NSString *_Nullable)message;
 - (void)injectJavaScript:(NSString *_Nullable)script;
+- (void)callJavaScript: (NSString *_Nullable) source;
+- (void)appendJavaScriptBeforeContentLoaded: (NSString *_Nullable) source;
+- (void)startBootpay;
 - (void)goForward;
 - (void)goBack;
 - (void)reload;

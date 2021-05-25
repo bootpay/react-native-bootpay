@@ -46,6 +46,7 @@ import com.facebook.react.uimanager.events.ContentSizeChangeEvent;
 import com.facebook.react.views.scroll.OnScrollDispatchHelper;
 import com.facebook.react.views.scroll.ScrollEvent;
 import com.facebook.react.views.scroll.ScrollEventType;
+import java.util.ArrayList;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URISyntaxException;
@@ -60,7 +61,7 @@ class BPCWebView extends WebView implements LifecycleEventListener {
     protected @Nullable
     String injectedJS;
     protected @Nullable
-    String injectedJSBeforeContentLoaded;
+    ArrayList<String> injectedJSBeforeContentLoaded;
 
     /**
      * android.webkit.WebChromeClient fundamentally does not support JS injection into frames other
@@ -91,6 +92,7 @@ class BPCWebView extends WebView implements LifecycleEventListener {
      */
     public BPCWebView(ThemedReactContext reactContext) {
         super(reactContext);
+        this.injectedJSBeforeContentLoaded = new ArrayList();
         this.createCatalystInstance();
         progressChangedFilter = new ProgressChangedFilter();
     }
@@ -163,11 +165,24 @@ class BPCWebView extends WebView implements LifecycleEventListener {
     }
 
     public void setInjectedJavaScript(@Nullable String js) {
-        injectedJS = js;
+      injectedJS = js;
     }
 
-    public void setInjectedJavaScriptBeforeContentLoaded(@Nullable String js) {
-        injectedJSBeforeContentLoaded = js;
+    // callJavaScript
+    public void callJavaScript(@Nullable String js) {
+         if (getSettings().getJavaScriptEnabled() &&
+                js != null &&
+                !TextUtils.isEmpty(js)) {
+            evaluateJavascriptWithFallback("(function() {\n" + js + ";\n})();");
+        }
+    }
+
+    public void setInjectedJavaScriptBeforeContentLoaded(ArrayList<String> jsList) {
+        injectedJSBeforeContentLoaded = jsList;
+    }
+
+    public void appendJavaScriptBeforeContentLoaded(String js) {
+        injectedJSBeforeContentLoaded.add(js);
     }
 
     public void setInjectedJavaScriptForMainFrameOnly(boolean enabled) {
@@ -188,6 +203,11 @@ class BPCWebView extends WebView implements LifecycleEventListener {
         if (reactContext != null) {
             mCatalystInstance = reactContext.getCatalystInstance();
         }
+    }
+
+    public void startBootpay() {
+      callInjectedJavaScriptBeforeContentLoaded();
+        callInjectedJavaScript();
     }
 
     @SuppressLint("AddJavascriptInterface")
@@ -232,10 +252,10 @@ class BPCWebView extends WebView implements LifecycleEventListener {
     }
 
     public void callInjectedJavaScriptBeforeContentLoaded() {
-        if (getSettings().getJavaScriptEnabled() &&
-                injectedJSBeforeContentLoaded != null &&
-                !TextUtils.isEmpty(injectedJSBeforeContentLoaded)) {
-            evaluateJavascriptWithFallback("(function() {\n" + injectedJSBeforeContentLoaded + ";\n})();");
+        if (getSettings().getJavaScriptEnabled() && injectedJSBeforeContentLoaded != null) {
+          for(String js : injectedJSBeforeContentLoaded) {
+            evaluateJavascriptWithFallback("(function() {\n" + js + ";\n})();");
+          }
         }
     }
 

@@ -141,6 +141,19 @@ var WebView = /** @class */ (function (_super) {
         _this.injectJavaScript = function (data) {
             UIManager.dispatchViewManagerCommand(_this.getWebViewHandle(), _this.getCommands().injectJavaScript, [data]);
         };
+        
+        _this.callJavaScript = function (data) {
+            UIManager.dispatchViewManagerCommand(_this.getWebViewHandle(), _this.getCommands().callJavaScript, [data]);
+        };
+
+        _this.startBootpay = function () {
+            UIManager.dispatchViewManagerCommand(_this.getWebViewHandle(), _this.getCommands().startBootpay, undefined);
+        };
+
+        _this.appendJavaScriptBeforeContentLoaded = function (data) {  
+            UIManager.dispatchViewManagerCommand(_this.getWebViewHandle(), _this.getCommands().appendJavaScriptBeforeContentLoaded, [data]);
+        };
+
         /**
          * We return an event with a bunch of fields including:
          *  url, title, loading, canGoBack, canGoForward

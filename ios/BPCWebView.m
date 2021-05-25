@@ -193,7 +193,7 @@ static NSDictionary* customCertificatesForHost;
  */
 - (WKWebView *)webView:(WKWebView *)webView createWebViewWithConfiguration:(WKWebViewConfiguration *)configuration forNavigationAction:(WKNavigationAction *)navigationAction windowFeatures:(WKWindowFeatures *)windowFeatures
 {
-  NSLog(@"createWebView %@", navigationAction.request.URL.absoluteURL);
+  // NSLog(@"createWebView %@", navigationAction.request.URL.absoluteURL);
 //  if (!navigationAction.targetFrame.isMainFrame) {
 //    [webView loadRequest:navigationAction.request];
 //  }
@@ -312,8 +312,7 @@ static NSDictionary* customCertificatesForHost;
 - (void)didMoveToWindow
 {
   if (self.window != nil && _webView == nil) {
-    WKWebViewConfiguration *wkWebViewConfig = [self setUpWkWebViewConfig];
-    NSLog(@"---------2134------------");
+    WKWebViewConfiguration *wkWebViewConfig = [self setUpWkWebViewConfig]; 
     wkWebViewConfig.preferences.javaScriptCanOpenWindowsAutomatically = YES;
     wkWebViewConfig.preferences.javaScriptEnabled = YES;
 #if !TARGET_OS_OSX
@@ -776,7 +775,7 @@ static NSDictionary* customCertificatesForHost;
   NSString *source = [NSString
     stringWithFormat:@"window.dispatchEvent(new MessageEvent('message', %@));",
     RCTJSONStringify(eventInitDict, NULL)
-  ];
+  ]; 
   [self injectJavaScript: source];
 }
 
@@ -974,7 +973,7 @@ static NSDictionary* customCertificatesForHost;
     decisionHandler(WKNavigationActionPolicyCancel);
   } else if(![navigationAction.request.URL.scheme isEqualToString:@"http"] && ![navigationAction.request.URL.scheme isEqualToString:@"https"]) {
     [[UIApplication sharedApplication] openURL:navigationAction.request.URL options:@{} completionHandler:^(BOOL success) {}];
-    decisionHandler(WKNavigationActionPolicyAllow);
+    decisionHandler(WKNavigationActionPolicyCancel);
   } else {
     [self navigationOriginRN:webView decidePolicyForNavigationAction:navigationAction decisionHandler:decisionHandler];
   }
@@ -1191,20 +1190,21 @@ static NSDictionary* customCertificatesForHost;
  */
 - (void)webView:(WKWebView *)webView
   didFinishNavigation:(WKNavigation *)navigation
-{
+{ 
   if (_ignoreSilentHardwareSwitch) {
     [self forceIgnoreSilentHardwareSwitch:true];
-  }
+  } 
 
   if (_onLoadingFinish) {
     _onLoadingFinish([self baseEvent]);
   }
 }
 
-- (void)injectJavaScript:(NSString *)script
-{
-  [self evaluateJS: script thenCall: nil];
-}
+// - (void)injectJavaScript:(NSString *)script
+// {
+//   [self evaluateJS: script thenCall: nil];
+// }
+ 
 
 - (void)goForward
 {
@@ -1276,7 +1276,9 @@ static NSDictionary* customCertificatesForHost;
 #endif // !TARGET_OS_OSX
 
 - (void)setInjectedJavaScript:(NSString *)source {
+  
   _injectedJavaScript = source;
+  // NSLog(@"setInject: %@", _injectedJavaScript);
 
   self.atEndScript = source == nil ? nil : [[WKUserScript alloc] initWithSource:source
       injectionTime:WKUserScriptInjectionTimeAtDocumentEnd
@@ -1287,16 +1289,49 @@ static NSDictionary* customCertificatesForHost;
   }
 }
 
-- (void)setInjectedJavaScriptBeforeContentLoaded:(NSString *)source {
-  _injectedJavaScriptBeforeContentLoaded = source;
 
-  self.atStartScript = source == nil ? nil : [[WKUserScript alloc] initWithSource:source
-       injectionTime:WKUserScriptInjectionTimeAtDocumentStart
-    forMainFrameOnly:_injectedJavaScriptBeforeContentLoadedForMainFrameOnly];
+- (void)setInjectedJavaScriptBeforeContentLoaded: (NSMutableArray *) source {
+    if(_injectedJavaScriptBeforeContentLoaded == nil) {
+        _injectedJavaScriptBeforeContentLoaded = [[NSMutableArray alloc] init];
+    }
+    
+    _injectedJavaScriptBeforeContentLoaded = source;
+
+//  self.atStartScript = source == nil ? nil : [[WKUserScript alloc] initWithSource:source
+//       injectionTime:WKUserScriptInjectionTimeAtDocumentStart
+//    forMainFrameOnly:_injectedJavaScriptBeforeContentLoadedForMainFrameOnly];
 
   if(_webView != nil){
     [self resetupScripts:_webView.configuration];
   }
+}
+
+
+- (void)injectJavaScript: (NSString *) source {
+  _injectedJavaScript = source;
+}
+
+- (void)callJavaScript: (NSString *) source {
+    [self evaluateJS: source thenCall: nil];
+}
+
+- (void)appendJavaScriptBeforeContentLoaded: (NSString *) source {
+   if(_injectedJavaScriptBeforeContentLoaded == nil) {
+        _injectedJavaScriptBeforeContentLoaded = [[NSMutableArray alloc] init];
+    }  
+    // NSLog(@"appendJavaScriptBeforeContentLoaded: %@", source);
+    [_injectedJavaScriptBeforeContentLoaded addObject: source];
+    // NSLog(@"array: %@", _injectedJavaScriptBeforeContentLoaded);
+}
+
+- (void) startBootpay {
+  // NSLog(@"startBootpay");
+  for (NSString* script in _injectedJavaScriptBeforeContentLoaded) { 
+    // NSLog(@"script: %@", script);
+    [self evaluateJS: script thenCall: nil];
+  }
+  // NSLog(@"script22: %@", _injectedJavaScript);
+  [self evaluateJS: _injectedJavaScript thenCall: nil];
 }
 
 - (void)setInjectedJavaScriptForMainFrameOnly:(BOOL)mainFrameOnly {
@@ -1433,11 +1468,13 @@ static NSDictionary* customCertificatesForHost;
       [wkWebViewConfig.userContentController addUserScript:self.postMessageScript];
     }
     if (self.atEndScript) {
+      // NSLog(@"endScript: %@", self.atEndScript);
       [wkWebViewConfig.userContentController addUserScript:self.atEndScript];
     }
   }
   // Whether or not messaging is enabled, add the startup script if it exists.
   if (self.atStartScript) {
+    // NSLog(@"atStartScript: %@", self.atStartScript);
     [wkWebViewConfig.userContentController addUserScript:self.atStartScript];
   }
 }

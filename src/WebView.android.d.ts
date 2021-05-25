@@ -33,6 +33,9 @@ declare class WebView extends React.Component<AndroidWebViewProps, State> {
         stopLoading: number;
         postMessage: number;
         injectJavaScript: number;
+        callJavaScript: number;
+        appendJavaScriptBeforeContentLoaded: number;
+        startBootpay: number;
         loadUrl: number;
         requestFocus: number;
         clearHistory: number;
@@ -55,6 +58,9 @@ declare class WebView extends React.Component<AndroidWebViewProps, State> {
      * functionality, look into postMessage/onMessage.
      */
     injectJavaScript: (data: string) => void;
+    callJavaScript: (data: string) => void;
+    appendJavaScriptBeforeContentLoaded: (data: string) => void;
+    startBootpay: () => void;
     /**
      * We return an event with a bunch of fields including:
      *  url, title, loading, canGoBack, canGoForward

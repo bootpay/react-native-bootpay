@@ -164,7 +164,7 @@ export interface CommonNativeWebViewProps extends ViewProps {
     cacheEnabled?: boolean;
     incognito?: boolean;
     injectedJavaScript?: string;
-    injectedJavaScriptBeforeContentLoaded?: string;
+    injectedJavaScriptBeforeContentLoaded?: string[];
     injectedJavaScriptForMainFrameOnly?: boolean;
     injectedJavaScriptBeforeContentLoadedForMainFrameOnly?: boolean;
     javaScriptCanOpenWindowsAutomatically?: boolean;
@@ -802,11 +802,13 @@ export interface WebViewSharedProps extends ViewProps {
      * when the view loads.
      */
     injectedJavaScript?: string;
+
+    appendJavaScriptBeforeContentLoaded?: string;
     /**
      * Set this to provide JavaScript that will be injected into the web page
      * once the webview is initialized but before the view loads any content.
      */
-    injectedJavaScriptBeforeContentLoaded?: string;
+    injectedJavaScriptBeforeContentLoaded?: string[]; 
     /**
      * If `true` (default; mandatory for Android), loads the `injectedJavaScript` only into the main frame.
      * If `false` (only supported on iOS and macOS), loads it into all frames (e.g. iframes).

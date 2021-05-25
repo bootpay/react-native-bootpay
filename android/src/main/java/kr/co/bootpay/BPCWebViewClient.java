@@ -40,7 +40,9 @@ class BPCWebViewClient extends WebViewClient {
     private static final String TAG = "BPCWebViewClient";
     protected static final int SHOULD_OVERRIDE_URL_LOADING_TIMEOUT = 250;
 
-    protected boolean mLastLoadFailed = false;
+//  protected boolean isCDNLoaded = false;
+
+//    protected boolean mLastLoadFailed = false;
     protected @Nullable
     ReadableArray mUrlPrefixesForDefaultIntent;
     protected BPCWebView.ProgressChangedFilter progressChangedFilter = null;
@@ -54,22 +56,24 @@ class BPCWebViewClient extends WebViewClient {
     public void onPageFinished(WebView webView, String url) {
         super.onPageFinished(webView, url);
 
-        if (!mLastLoadFailed) {
-            BPCWebView reactWebView = (BPCWebView) webView;
+//        if (!isCDNLoaded) {
+//            BPCWebView reactWebView = (BPCWebView) webView;
+//
+//            reactWebView.callInjectedJavaScriptBeforeContentLoaded();
+//            reactWebView.callInjectedJavaScript();
+//            isCDNLoaded = true;
+//        }
 
-            reactWebView.callInjectedJavaScript();
-
-            emitFinishEvent(webView, url);
-        }
+        emitFinishEvent(webView, url);
     }
 
     @Override
     public void onPageStarted(WebView webView, String url, Bitmap favicon) {
         super.onPageStarted(webView, url, favicon);
-        mLastLoadFailed = false;
+//        mLastLoadFailed = false;
 
-        BPCWebView reactWebView = (BPCWebView) webView;
-        reactWebView.callInjectedJavaScriptBeforeContentLoaded();
+//        BPCWebView reactWebView = (BPCWebView) webView;
+//        reactWebView.callInjectedJavaScriptBeforeContentLoaded();
 
         BPCWebViewManager.DispatchEvent(
                 webView,
@@ -80,23 +84,18 @@ class BPCWebViewClient extends WebViewClient {
 
     @Override
     public boolean shouldOverrideUrlLoading(WebView view, String url) {
-        Intent intent = parse(url);
-        if (isIntent(url)) {
-            if (isExistInfo(intent, view.getContext()) || isExistPackage(intent, view.getContext()))
-                return start(intent, view.getContext());
-            else
-                return gotoMarket(intent, view.getContext());
-        } else if (isMarket(url)) {
-            if (!(isExistInfo(intent, view.getContext()) || isExistPackage(intent, view.getContext())))
-                return gotoMarket(intent, view.getContext());
-            else
-//          return true;
-                return shouldOverrideUrlLoadingRN(view, url);
-        } else if (isSpecialCase(url)) {
-            if (isExistInfo(intent, view.getContext()) || isExistPackage(intent, view.getContext()))
-                return start(intent, view.getContext());
-            else
-                return gotoMarket(intent, view.getContext());
+        Intent intent = getIntentWithPackage(url);
+        Context context = view.getContext();
+
+        if(isIntent(url)) {
+            if(isInstallApp(intent, context)) return startApp(intent, context);
+            else return startGooglePlay(intent, context);
+        } else if(isMarket(url)) {
+            if(isInstallApp(intent, context)) return startApp(intent, context);
+            else return startGooglePlay(intent, context);
+        } else if(isSpecialCase(url)) {
+            if(isInstallApp(intent, context)) return startApp(intent, context);
+            else return startGooglePlay(intent, context);
         }
 //      return url.contains("vguardend");
         return shouldOverrideUrlLoadingRN(view, url);
@@ -166,10 +165,20 @@ class BPCWebViewClient extends WebViewClient {
                 || url.startsWith("v3mobileplusweb://")
                 || url.startsWith("hdcardappcardansimclick://")
                 || url.startsWith("nidlogin://")
-                || url.startsWith("mpocket.online.ansimclick://");
+                || url.startsWith("mpocket.online.ansimclick://")
+                || url.startsWith("wooripay://")
+                || url.startsWith("kakaotalk://");
     }
 
-    private Intent parse(String url) {
+    private Boolean isIntent(String url) {
+        return url.startsWith("intent:");
+    }
+    private Boolean isMarket(String url) {
+        return url.startsWith("market://");
+    }
+
+
+    private Intent getIntentWithPackage(String url) {
         try {
             Intent intent = Intent.parseUri(url, Intent.URI_INTENT_SCHEME);
             if(intent.getPackage() == null) {
@@ -193,18 +202,12 @@ class BPCWebViewClient extends WebViewClient {
         }
     }
 
-    private Boolean isIntent(String url) {
-//                return url.matches("^intent:?\\w*://\\S+$");
-        return url.startsWith("intent:");
-    }
-
-    private Boolean isMarket(String url) {
-        return url.matches("^market://\\S+$");
+    private boolean isInstallApp(Intent intent, Context context) {
+        return isExistPackageInfo(intent, context) || isExistLaunchedIntent(intent, context);
     }
 
 
-
-    private Boolean isExistInfo(Intent intent, Context context) {
+    private boolean isExistPackageInfo(Intent intent, Context context) {
         try {
             return intent != null && context.getPackageManager().getPackageInfo(intent.getPackage(), PackageManager.GET_ACTIVITIES) != null;
         } catch (PackageManager.NameNotFoundException e) {
@@ -213,19 +216,28 @@ class BPCWebViewClient extends WebViewClient {
         }
     }
 
-    private Boolean isExistPackage(Intent intent, Context context) {
+    private boolean isExistLaunchedIntent(Intent intent, Context context) {
         return intent != null &&  intent.getPackage() != null && context.getPackageManager().getLaunchIntentForPackage(intent.getPackage()) != null;
     }
 
-    private boolean start(Intent intent, Context context) {
+    private boolean startApp(Intent intent, Context context) {
         context.startActivity(intent);
         return true;
     }
 
-    private boolean gotoMarket(Intent intent, Context context) {
+    private boolean startGooglePlay(Intent intent, Context context) {
         final String appPackageName = intent.getPackage();
         if(appPackageName == null) {
-            context.startActivity(new Intent(Intent.ACTION_VIEW, intent.getData()));
+            Uri dataUri = intent.getData();
+
+            try {
+                context.startActivity(new Intent(Intent.ACTION_VIEW, intent.getData()));
+            } catch (Exception e) {
+                String packageName = "com.nhn.android.search"; //appPackageName이 비어있으면 네이버로 보내기(네이버 로그인)
+                if(dataUri != null && dataUri.toString().startsWith("wooripay://")) packageName = "com.wooricard.wpay"; //우리카드 예외처리
+
+                context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + packageName)));
+            }
             return true;
         }
         try {
@@ -330,7 +342,7 @@ class BPCWebViewClient extends WebViewClient {
         }
 
         super.onReceivedError(webView, errorCode, description, failingUrl);
-        mLastLoadFailed = true;
+//        mLastLoadFailed = true;
 
         // In case of an error JS side expect to get a finish event first, and then get an error event
         // Android WebView does it in the opposite way, so we need to simulate that behavior
@@ -413,7 +425,7 @@ class BPCWebViewClient extends WebViewClient {
         // Don't use webView.getUrl() here, the URL isn't updated to the new value yet in callbacks
         // like onPageFinished
         event.putString("url", url);
-        event.putBoolean("loading", !mLastLoadFailed && webView.getProgress() != 100);
+        event.putBoolean("loading", webView.getProgress() != 100);
         event.putString("title", webView.getTitle());
         event.putBoolean("canGoBack", webView.canGoBack());
         event.putBoolean("canGoForward", webView.canGoForward());

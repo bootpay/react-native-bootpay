@@ -17,6 +17,9 @@ declare class WebView extends React.Component<IOSWebViewProps, State> {
         stopLoading: number;
         postMessage: number;
         injectJavaScript: number;
+        callJavaScript: number;
+        appendJavaScriptBeforeContentLoaded: number;
+        startBootpay: number;
         loadUrl: number;
         requestFocus: number;
     };
@@ -58,6 +61,12 @@ declare class WebView extends React.Component<IOSWebViewProps, State> {
      * functionality, look into postMessage/onMessage.
      */
     injectJavaScript: (data: string) => void;
+
+
+    callJavaScript: (data: string) => void;
+    appendJavaScriptBeforeContentLoaded: (data: string) => void;
+    startBootpay: () => void;
+
     /**
      * We return an event with a bunch of fields including:
      *  url, title, loading, canGoBack, canGoForward

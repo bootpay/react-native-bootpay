@@ -97,40 +97,19 @@ class BPCWebChromeClient extends WebChromeClient implements LifecycleEventListen
     @Override
     public boolean onCreateWindow(WebView view, boolean isDialog, boolean isUserGesture, Message resultMsg) {
 
-//        final BPCWebView newWebView = new BPCWebView((ThemedReactContext) view.getContext());
         final BPCWebView newWebView = BPCWebViewManager.CreateViewInstance((ThemedReactContext) view.getContext(), true);
-        BPCWebViewManager.SetupWebChromeClient((ReactContext) view.getContext(), newWebView);
         BPCReactProp.settingPropAll(newWebView);
-
-//        WebSettings webSettings = newWebView.getSettings();
-//        webSettings.setJavaScriptEnabled(true);
 
         final Dialog dialog = new Dialog(view.getContext(), android.R.style.Theme_Black_NoTitleBar_Fullscreen);
         dialog.setContentView(newWebView);
-
         ViewGroup.LayoutParams params = dialog.getWindow().getAttributes();
         params.width = ViewGroup.LayoutParams.MATCH_PARENT;
         params.height = ViewGroup.LayoutParams.MATCH_PARENT;
         dialog.getWindow().setAttributes((android.view.WindowManager.LayoutParams) params);
         dialog.show();
 
-        newWebView.setWebChromeClient(new WebChromeClient() {
-            @Override
-            public void onCloseWindow(WebView window) {
-                dialog.dismiss();
-            }
-        });
-//
-//
-//        // WebView Popup에서 내용이 안보이고 빈 화면만 보여 아래 코드 추가
-//        newWebView.setWebViewClient(new WebViewClient() {
-//            @Override
-//            public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
-//                return false;
-//            }
-//        });
-
-        ((WebView.WebViewTransport)resultMsg.obj).setWebView(newWebView);
+        final WebView.WebViewTransport transport = (WebView.WebViewTransport) resultMsg.obj;
+        transport.setWebView(newWebView);
         resultMsg.sendToTarget();
         return true;
     }
