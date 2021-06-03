@@ -82,7 +82,7 @@ class BPCWebView extends WebView implements LifecycleEventListener {
     protected boolean hasScrollEvent = false;
     protected ProgressChangedFilter progressChangedFilter;
 
-    protected static final String JAVASCRIPT_INTERFACE = "ReactNativeWebView";
+    protected static final String JAVASCRIPT_INTERFACE = "BootpayRNWebView";
 
     /**
      * WebView must be created with an context of the current activity

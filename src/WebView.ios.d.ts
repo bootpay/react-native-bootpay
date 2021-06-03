@@ -19,6 +19,7 @@ declare class WebView extends React.Component<IOSWebViewProps, State> {
         injectJavaScript: number;
         callJavaScript: number;
         appendJavaScriptBeforeContentLoaded: number;
+        showCloseButton: number;
         startBootpay: number;
         loadUrl: number;
         requestFocus: number;
@@ -62,7 +63,7 @@ declare class WebView extends React.Component<IOSWebViewProps, State> {
      */
     injectJavaScript: (data: string) => void;
 
-
+    showCloseButton: () => void;
     callJavaScript: (data: string) => void;
     appendJavaScriptBeforeContentLoaded: (data: string) => void;
     startBootpay: () => void;

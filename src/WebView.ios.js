@@ -141,6 +141,10 @@ var WebView = /** @class */ (function (_super) {
         _this.injectJavaScript = function (data) {
             UIManager.dispatchViewManagerCommand(_this.getWebViewHandle(), _this.getCommands().injectJavaScript, [data]);
         };
+
+        _this.showCloseButton = function () {
+            UIManager.dispatchViewManagerCommand(_this.getWebViewHandle(), _this.getCommands().showCloseButton, undefined);
+        };
         
         _this.callJavaScript = function (data) {
             UIManager.dispatchViewManagerCommand(_this.getWebViewHandle(), _this.getCommands().callJavaScript, [data]);

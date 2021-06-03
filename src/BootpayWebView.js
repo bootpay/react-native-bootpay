@@ -17,7 +17,8 @@ export class BootpayWebView extends Component {
             {
                 visibility: false,
                 script: '',
-                firstLoad: false
+                firstLoad: false,
+                showCloseButton: false
             }
         )
         UserInfo.setBootpayLastTime(Date.now());
@@ -27,7 +28,7 @@ export class BootpayWebView extends Component {
 
         const injectedJavascript = `(function() {
                 window.postMessage = function(data) {
-            window.ReactNativeWebView.postMessage(data);
+            window.BootpayRNWebView.postMessage(data);
             };
         })()`
 
@@ -61,8 +62,17 @@ export class BootpayWebView extends Component {
         payload.user = user;
         payload.extra = extra;
 
-        if(extra != undefined && extra.quickPopup == 1) {
-            this.appendJavaScriptBeforeContentLoaded('BootPay.startQuickPopup();');
+        var showCloseBtn = false;
+
+        if(extra != undefined) {
+            if(extra.quickPopup == 1) {
+                this.appendJavaScriptBeforeContentLoaded('BootPay.startQuickPopup();');
+            }
+            if(Platform.OS == 'ios' && extra.ios_close_button == true) {
+                showCloseBtn = true;
+                // if(this.wv == null || this.wv == undefined) return;
+                // this.wv.showCloseButton();
+            }
         }
 
         //visibility가 true가 되면 webview onLoaded가 실행됨
@@ -70,7 +80,8 @@ export class BootpayWebView extends Component {
             {
                 visibility: true,
                 script: 'if(BootPay == undefined || BootPay.request == undefined) {return;} BootPay.request(' + JSON.stringify(payload) + ')',
-                firstLoad: false
+                firstLoad: false,
+                showCloseButton: showCloseBtn
             }
         )
         UserInfo.updateInfo();
@@ -102,12 +113,12 @@ export class BootpayWebView extends Component {
 
 
     generateScript= (script) => {
-        const onError = '.error(function(data){ window.ReactNativeWebView.postMessage( JSON.stringify(data) ); })';
-        const onCancel = '.cancel(function(data){ window.ReactNativeWebView.postMessage( JSON.stringify(data) ); })';
-        const onReady = '.ready(function(data){ window.ReactNativeWebView.postMessage( JSON.stringify(data) ); })';
-        const onConfirm = '.confirm(function(data){ window.ReactNativeWebView.postMessage( JSON.stringify(data) ); })';
-        const onClose = '.close(function(data){ window.ReactNativeWebView.postMessage("close"); })';
-        const onDone = '.done(function(data){ window.ReactNativeWebView.postMessage( JSON.stringify(data) ); })';
+        const onError = '.error(function(data){ window.BootpayRNWebView.postMessage( JSON.stringify(data) ); })';
+        const onCancel = '.cancel(function(data){ window.BootpayRNWebView.postMessage( JSON.stringify(data) ); })';
+        const onReady = '.ready(function(data){ window.BootpayRNWebView.postMessage( JSON.stringify(data) ); })';
+        const onConfirm = '.confirm(function(data){ window.BootpayRNWebView.postMessage( JSON.stringify(data) ); })';
+        const onClose = '.close(function(data){ window.BootpayRNWebView.postMessage("close"); })';
+        const onDone = '.done(function(data){ window.BootpayRNWebView.postMessage( JSON.stringify(data) ); })';
 
         return script + onError + onCancel + onReady + onConfirm + onClose + onDone + '; void(0);';
     }
@@ -177,6 +188,12 @@ export class BootpayWebView extends Component {
     setPayScript = () => {
         const fullScript = this.generateScript(this.state.script);
         this.injectJavaScript(fullScript);
+        if(this.state.showCloseButton == true) {
+            if(this.wv == null || this.wv == undefined) return;
+            console.log('-------- showCloseButton');
+            this.wv.showCloseButton();
+        }
+
     }
 
     startBootpay = () => {
@@ -214,7 +231,7 @@ export class BootpayWebView extends Component {
         if(this.wv == null || this.wv == undefined) return;
         this.wv.appendJavaScriptBeforeContentLoaded(`${script}`);
     }
-
+ 
 
     setAnalyticsData = async () => { 
         const uuid = await UserInfo.getBootpayUUID(); 

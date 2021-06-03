@@ -781,10 +781,10 @@ export interface WebViewSharedProps extends ViewProps {
      */
     onNavigationStateChange?: (event: WebViewNavigation) => void;
     /**
-     * Function that is invoked when the webview calls `window.ReactNativeWebView.postMessage`.
+     * Function that is invoked when the webview calls `window.BootpayRNWebView.postMessage`.
      * Setting this property will inject this global into your webview.
      *
-     * `window.ReactNativeWebView.postMessage` accepts one argument, `data`, which will be
+     * `window.BootpayRNWebView.postMessage` accepts one argument, `data`, which will be
      * available on the event object, `event.nativeEvent.data`. `data` must be a string.
      */
     onMessage?: (event: WebViewMessageEvent) => void;

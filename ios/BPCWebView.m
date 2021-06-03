@@ -19,8 +19,8 @@
 #import "objc/runtime.h"
 
 static NSTimer *keyboardTimer;
-static NSString *const HistoryShimName = @"ReactNativeHistoryShim";
-static NSString *const MessageHandlerName = @"ReactNativeWebView";
+static NSString *const HistoryShimName = @"BootpayRNHistoryShim";
+static NSString *const MessageHandlerName = @"BootpayRNWebView";
 static NSURLCredential* clientAuthenticationCredential;
 static NSDictionary* customCertificatesForHost;
 
@@ -83,7 +83,7 @@ static NSDictionary* customCertificatesForHost;
 @property (nonatomic, copy) WKWebView *webView;
 #else
 @property (nonatomic, copy) BPCWKWebView *webView;
-#endif // !TARGET_OS_OSX
+#endif // !TARGET_OS_OSX 
 @property (nonatomic, strong) WKUserScript *postMessageScript;
 @property (nonatomic, strong) WKUserScript *atStartScript;
 @property (nonatomic, strong) WKUserScript *atEndScript;
@@ -102,6 +102,7 @@ static NSDictionary* customCertificatesForHost;
   // Workaround for StatusBar appearance bug for iOS 12
   // https://github.com/react-native-community/react-native-webview/issues/62
   BOOL _isFullScreenVideoOpen;
+  BOOL _showCloseButton;
 #if !TARGET_OS_OSX
   UIStatusBarStyle _savedStatusBarStyle;
 #endif // !TARGET_OS_OSX
@@ -240,7 +241,11 @@ static NSDictionary* customCertificatesForHost;
     }
 #endif
 
+    NSLog(@"----- create popup");
     [self addSubview:wv];
+    if(_showCloseButton) {
+      [self showCloseButton];
+    }
 //    [self visitSource: wv];
 //    [wv loadRequest:navigationAction.request];
 //    wv.load(navigationAction.request)
@@ -352,6 +357,7 @@ static NSDictionary* customCertificatesForHost;
     }
 #endif
 
+      NSLog(@"------- didmovetoWindow");
     [self addSubview:_webView];
     [self setHideKeyboardAccessoryView: _savedHideKeyboardAccessoryView];
     [self setKeyboardDisplayRequiresUserAction: _savedKeyboardDisplayRequiresUserAction];
@@ -1313,6 +1319,25 @@ static NSDictionary* customCertificatesForHost;
 
 - (void)callJavaScript: (NSString *) source {
     [self evaluateJS: source thenCall: nil];
+}
+
+- (void) showCloseButton {
+
+
+NSLog(@"-----22 showcloseButton");
+    _showCloseButton = YES;
+
+    UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
+    [button addTarget:self action:@selector(closeWindow:) forControlEvents: UIControlEventTouchUpInside];
+    [button setTitle:@"X" forState:UIControlStateNormal];
+    [button setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    button.frame = CGRectMake(self.frame.size.width - 40, 0.0, 40.0, 30.0);
+    [self addSubview:button];
+}
+
+
+-(void) closeWindow:(UIButton*)sender { 
+    [self evaluateJS:@"window.BootpayRNWebView.postMessage('{\"action\": \"BootpayCancel\", \"message\": \"사용자에 의한 취소\"}');" thenCall: nil];
 }
 
 - (void)appendJavaScriptBeforeContentLoaded: (NSString *) source {

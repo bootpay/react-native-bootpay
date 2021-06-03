@@ -80,6 +80,8 @@
 - (void)injectJavaScript:(NSString *_Nullable)script;
 - (void)callJavaScript: (NSString *_Nullable) source;
 - (void)appendJavaScriptBeforeContentLoaded: (NSString *_Nullable) source;
+
+- (void)showCloseButton;
 - (void)startBootpay;
 - (void)goForward;
 - (void)goBack;

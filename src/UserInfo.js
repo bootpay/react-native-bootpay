@@ -30,7 +30,6 @@ export default class UserInfo extends Component {
         })
     }
 
-
     static getBootpayUUID = () => {
         let uuid = DeviceInfo.getUniqueId(); 
         console.log("uuid1: " + uuid);
@@ -68,8 +67,7 @@ export default class UserInfo extends Component {
     }
 
     static updateInfo = async () => {
-        const uuid = await UserInfo.getBootpayUUID(); 
-        console.log("uuid5: " + uuid);
+        const uuid = await UserInfo.getBootpayUUID();  
         const bootpaySK = await this.getBootpaySK();
         const lastTime = await this.getBootpayLastTime();
  

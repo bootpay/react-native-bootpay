@@ -71,7 +71,7 @@ const App: () => React$Node = () => {
       theme: "purple", 
       custom_background: "", 
       custom_font_color: "", 
-      iosCloseButton: false 
+      ios_close_button: true 
     } 
 
     if(bootpay != null && bootpay.current != null) bootpay.current.request(payload, items, user, extra);
