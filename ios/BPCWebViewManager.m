@@ -174,10 +174,7 @@ RCT_EXPORT_METHOD(appendJavaScriptBeforeContentLoaded:(nonnull NSNumber *)reactT
 }
 
 RCT_EXPORT_METHOD(showCloseButton:(nonnull NSNumber *)reactTag)
-{
-
-NSLog(@"------- RCT_EX Show Close Button");
-
+{ 
   [self.bridge.uiManager addUIBlock:^(__unused RCTUIManager *uiManager, NSDictionary<NSNumber *, BPCWebView *> *viewRegistry) {
     BPCWebView *view = viewRegistry[reactTag];
     if (![view isKindOfClass:[BPCWebView class]]) {

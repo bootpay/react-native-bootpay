@@ -193,12 +193,7 @@ static NSDictionary* customCertificatesForHost;
  * See https://stackoverflow.com/questions/25713069/why-is-wkwebview-not-opening-links-with-target-blank/25853806#25853806 for details.
  */
 - (WKWebView *)webView:(WKWebView *)webView createWebViewWithConfiguration:(WKWebViewConfiguration *)configuration forNavigationAction:(WKNavigationAction *)navigationAction windowFeatures:(WKWindowFeatures *)windowFeatures
-{
-  // NSLog(@"createWebView %@", navigationAction.request.URL.absoluteURL);
-//  if (!navigationAction.targetFrame.isMainFrame) {
-//    [webView loadRequest:navigationAction.request];
-//  }
-    
+{ 
     
 //    [self resetupScripts:configuration];
  
@@ -239,9 +234,7 @@ static NSDictionary* customCertificatesForHost;
     if ([wv.scrollView respondsToSelector:@selector(setContentInsetAdjustmentBehavior:)]) {
       wv.scrollView.contentInsetAdjustmentBehavior = _savedContentInsetAdjustmentBehavior;
     }
-#endif
-
-    NSLog(@"----- create popup");
+#endif 
     [self addSubview:wv];
     if(_showCloseButton) {
       [self showCloseButton];
@@ -355,9 +348,7 @@ static NSDictionary* customCertificatesForHost;
     if ([_webView.scrollView respondsToSelector:@selector(setContentInsetAdjustmentBehavior:)]) {
       _webView.scrollView.contentInsetAdjustmentBehavior = _savedContentInsetAdjustmentBehavior;
     }
-#endif
-
-      NSLog(@"------- didmovetoWindow");
+#endif 
     [self addSubview:_webView];
     [self setHideKeyboardAccessoryView: _savedHideKeyboardAccessoryView];
     [self setKeyboardDisplayRequiresUserAction: _savedKeyboardDisplayRequiresUserAction];
@@ -1283,8 +1274,7 @@ static NSDictionary* customCertificatesForHost;
 
 - (void)setInjectedJavaScript:(NSString *)source {
   
-  _injectedJavaScript = source;
-  // NSLog(@"setInject: %@", _injectedJavaScript);
+  _injectedJavaScript = source; 
 
   self.atEndScript = source == nil ? nil : [[WKUserScript alloc] initWithSource:source
       injectionTime:WKUserScriptInjectionTimeAtDocumentEnd
@@ -1321,10 +1311,7 @@ static NSDictionary* customCertificatesForHost;
     [self evaluateJS: source thenCall: nil];
 }
 
-- (void) showCloseButton {
-
-
-NSLog(@"-----22 showcloseButton");
+- (void) showCloseButton { 
     _showCloseButton = YES;
 
     UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -1343,19 +1330,14 @@ NSLog(@"-----22 showcloseButton");
 - (void)appendJavaScriptBeforeContentLoaded: (NSString *) source {
    if(_injectedJavaScriptBeforeContentLoaded == nil) {
         _injectedJavaScriptBeforeContentLoaded = [[NSMutableArray alloc] init];
-    }  
-    // NSLog(@"appendJavaScriptBeforeContentLoaded: %@", source);
-    [_injectedJavaScriptBeforeContentLoaded addObject: source];
-    // NSLog(@"array: %@", _injectedJavaScriptBeforeContentLoaded);
+    }   
+    [_injectedJavaScriptBeforeContentLoaded addObject: source]; 
 }
 
-- (void) startBootpay {
-  // NSLog(@"startBootpay");
-  for (NSString* script in _injectedJavaScriptBeforeContentLoaded) { 
-    // NSLog(@"script: %@", script);
+- (void) startBootpay { 
+  for (NSString* script in _injectedJavaScriptBeforeContentLoaded) {  
     [self evaluateJS: script thenCall: nil];
-  }
-  // NSLog(@"script22: %@", _injectedJavaScript);
+  } 
   [self evaluateJS: _injectedJavaScript thenCall: nil];
 }
 
@@ -1492,14 +1474,12 @@ NSLog(@"-----22 showcloseButton");
                                                                        name:MessageHandlerName];
       [wkWebViewConfig.userContentController addUserScript:self.postMessageScript];
     }
-    if (self.atEndScript) {
-      // NSLog(@"endScript: %@", self.atEndScript);
+    if (self.atEndScript) { 
       [wkWebViewConfig.userContentController addUserScript:self.atEndScript];
     }
   }
   // Whether or not messaging is enabled, add the startup script if it exists.
-  if (self.atStartScript) {
-    // NSLog(@"atStartScript: %@", self.atStartScript);
+  if (self.atStartScript) { 
     [wkWebViewConfig.userContentController addUserScript:self.atStartScript];
   }
 }
