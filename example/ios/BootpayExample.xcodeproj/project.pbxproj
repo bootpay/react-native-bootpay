@@ -282,7 +282,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.BootpayExample.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = kr.co.bootpay.rn.example;
 				PRODUCT_NAME = BootpayExample;
 				SWIFT_OBJC_BRIDGING_HEADER = "BootpayExample-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -310,7 +310,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.BootpayExample.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = kr.co.bootpay.rn.example;
 				PRODUCT_NAME = BootpayExample;
 				SWIFT_OBJC_BRIDGING_HEADER = "BootpayExample-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;

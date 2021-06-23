@@ -120,6 +120,9 @@ export class BootpayWebView extends Component {
         const onClose = '.close(function(data){ window.BootpayRNWebView.postMessage("close"); })';
         const onDone = '.done(function(data){ window.BootpayRNWebView.postMessage( JSON.stringify(data) ); })';
 
+
+        console.log(script);
+
         return script + onError + onCancel + onReady + onConfirm + onClose + onDone + '; void(0);';
     }
 
@@ -189,8 +192,7 @@ export class BootpayWebView extends Component {
         const fullScript = this.generateScript(this.state.script);
         this.injectJavaScript(fullScript);
         if(this.state.showCloseButton == true) {
-            if(this.wv == null || this.wv == undefined) return;
-            console.log('-------- showCloseButton');
+            if(this.wv == null || this.wv == undefined) return; 
             this.wv.showCloseButton();
         }
 

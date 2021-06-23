@@ -21,7 +21,7 @@ const App: () => React$Node = () => {
 
   const onPress = () => {   
     const payload = {
-      pg: 'danal',  //['kcp', 'danal', 'inicis', 'nicepay', 'lgup', 'toss', 'payapp', 'easypay', 'jtnet', 'tpay', 'mobilians', 'payletter', 'onestore', 'welcome'] 중 택 1
+      pg: 'payletter',  //['kcp', 'danal', 'inicis', 'nicepay', 'lgup', 'toss', 'payapp', 'easypay', 'jtnet', 'tpay', 'mobilians', 'payletter', 'onestore', 'welcome'] 중 택 1
       name: '마스카라', //결제창에 보여질 상품명
       order_id: '1234_1234', //개발사에 관리하는 주문번호 
       method: 'card', 
@@ -56,7 +56,7 @@ const App: () => React$Node = () => {
 
     //기타 설정
     const extra = {
-      app_scheme: "bootpaysample", //ios의 경우 카드사 앱 호출 후 되돌아오기 위한 앱 스키마명
+      app_scheme: "bootpayrn", //ios의 경우 카드사 앱 호출 후 되돌아오기 위한 앱 스키마명 
       expire_month: "0", //정기결제가 적용되는 개월 수 (정기결제 사용시), 미지정일시 PG사 기본값에 따름
       vbank_result: true, //가상계좌 결과창을 볼지(true), 말지(false)
       start_at: "",  //정기 결제 시작일 - 지정하지 않을 경우 - 그 날 당일로부터 결제가 가능한 Billing key 지급, "2020-10-14"

@@ -68,12 +68,12 @@ export default class UserInfo extends Component {
         const uuid = await UserInfo.getBootpayUUID();  
         const bootpaySK = await this.getBootpaySK();
         const lastTime = await this.getBootpayLastTime();
- 
-        if(bootpaySK == '') await this.newBootpaySK(uuid, current);
 
         const current = Date.now();
+
+        if(bootpaySK == '') await this.newBootpaySK(uuid, current);
         const isExpired = current - lastTime > 30 * 60 * 1000;
-        if(isExpired) this.newBootpaySK(uuid, current);
-        this.setBootpayLastTime(current);
+        if(isExpired) await this.newBootpaySK(uuid, current);
+        await this.setBootpayLastTime(current);
     }
 }
