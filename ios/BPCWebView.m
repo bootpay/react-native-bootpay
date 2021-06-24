@@ -965,6 +965,7 @@ static NSDictionary* customCertificatesForHost;
 //  NSString *url = navigationAction.request.URL;
 //  NSString * url = navigationAction.request.URL.absoluteString;
   
+    NSLog(@"-------- url: %@", navigationAction.request.URL.absoluteString);
   if([self isItunesURL:navigationAction.request.URL.absoluteString]) {
     [[UIApplication sharedApplication] openURL:navigationAction.request.URL options:@{} completionHandler:^(BOOL success) {}];
     decisionHandler(WKNavigationActionPolicyCancel);
@@ -977,16 +978,8 @@ static NSDictionary* customCertificatesForHost;
 }
 
 - (BOOL) isItunesURL:(NSString*) url {
-  NSString *itunesRegexp = @"\\/\\/itunes\\.apple\\.com\\/";
-//
-//  NSString *urlRegEx =
-//      @"(http|https)://((\\w)*|([0-9]*)|([-|_])*)+([\\.|/]((\\w)*|([0-9]*)|([-|_])*))+";
-//      NSPredicate *urlTest = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", urlRegEx];
-//      return [urlTest evaluateWithObject:candidate];
-  
-//  return [url rangeOfString: itunesRegexp options:NSRegularExpressionSearch];
-  NSPredicate *predicate = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", itunesRegexp];
-  return [predicate evaluateWithObject: url];
+    NSRange aRange = [url rangeOfString:@"itunes.apple.com"];
+    return aRange.location != NSNotFound; 
 }
 
 - (void)                  navigationOriginRN:(WKWebView *)webView

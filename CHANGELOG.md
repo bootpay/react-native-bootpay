@@ -1,3 +1,6 @@
+## 1.2.2
+* ios itunes url check 버그 수정 
+
 ## 1.2.1
 * ios close button 버그 수정 
 

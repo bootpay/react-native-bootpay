@@ -241,7 +241,7 @@ export class BootpayWebView extends Component {
         const bootLastTime = await UserInfo.getBootpayLastTime();      
 
 
-        const elaspedTime = Date.now() - bootLastTime;
+        const elaspedTime = Date.now() - bootLastTime; 
         this.appendJavaScriptBeforeContentLoaded(`window.BootPay.setAnalyticsData({uuid:'${uuid}',sk:'${bootpaySK}',sk_time:${bootLastTime},time:${elaspedTime}});`); 
     }
 }

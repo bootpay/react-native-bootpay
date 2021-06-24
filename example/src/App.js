@@ -106,8 +106,9 @@ const App: () => React$Node = () => {
     console.log('closed');
   }
 
-
-
+  // 5b8f6a4d396fa665fdc2b5e9
+  // 59bfc733e13f337dbd6ca489
+  
   return (
     <View style={styles.container}>
         <TouchableOpacity
