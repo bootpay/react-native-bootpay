@@ -59,7 +59,7 @@ export class BootpayWebView extends Component {
     request = (payload, items, user, extra) => {
         payload.application_id =  Platform.OS == 'ios' ? this.props.ios_application_id : this.props.android_application_id;
         payload.items = items;
-        payload.user = user;
+        payload.user_info = user;
         payload.extra = extra;
 
         var showCloseBtn = false;
